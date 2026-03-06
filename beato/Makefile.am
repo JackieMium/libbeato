@@ -1,4 +1,4 @@
-AM_CFLAGS = -I$(top_srcdir) @MACHTYPE_WARN@ -fno-strict-aliasing
+AM_CFLAGS = -I$(top_srcdir) -I../jkweb -std=gnu17 @MACHTYPE_WARN@ -fno-strict-aliasing -Wno-incompatible-pointer-types 
 
 lib_LIBRARIES = libbeato.a
 

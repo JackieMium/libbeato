@@ -452,11 +452,11 @@ static int mate_endpos(const bam1_t* bam, bam_hdr_t* h)
     if (!cig)
         return 0;
     /* needed for parsing I guess... taken from sam_parse1() in sam.c */
-    if (h->cigar_tab == 0) {
+    /*if (h->cigar_tab == 0) {
         h->cigar_tab = (int8_t*)calloc(128, sizeof(int8_t));
         for (i = 0; BAM_CIGAR_STR[i]; ++i)
             h->cigar_tab[(int)BAM_CIGAR_STR[i]] = i;
-    }
+    } */
     cigar_s = bam_aux2Z(cig);
     if (*cigar_s == '*')
         return 0;

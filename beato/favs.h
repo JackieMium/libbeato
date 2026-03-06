@@ -1,6 +1,8 @@
 #ifndef FAVS_H
 #define FAVS_H
 
+#include "jkweb/common.h"
+
 #ifndef HASH_H
 #include "jkweb/hash.h"
 #endif

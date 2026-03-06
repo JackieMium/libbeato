@@ -53,6 +53,8 @@
 #ifndef HASH_H
 #define HASH_H
 
+#include "common.h"
+
 struct hashEl
 /* An element in a hash list. */
     {

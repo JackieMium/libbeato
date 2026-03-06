@@ -1,8 +1,15 @@
+#include "jkweb/common.h"
+
 #ifndef FASTQ_STUFF_H
 #define FASTQ_STUFF_H
 
+struct lineFile;
+
 #define FASTQ_MAX_LEN 2048
 #define FASTQ_SANGER_MAX_QUAL 40
+
+#include "jkweb/common.h"
+#include "jkweb/linefile.h"
 
 struct fastq_auto
 /* fastq using all non-heap mem */

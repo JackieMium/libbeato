@@ -8,6 +8,12 @@
 #include "config.h"
 #endif
 
+#define _GNU_SOURCE  // Required for setenv/gethostname on some Linux setups
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>  // Crucial for GCC 15 to see read/write/close
+
 #include "common.h"
 #include "errabort.h"
 #include "portable.h"

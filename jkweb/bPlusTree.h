@@ -44,6 +44,7 @@
  * Note in general the leaf nodes may not be the same size as the index nodes, though in
  * the important case where the values are file offsets they will be.
  */
+#include <stdio.h>
 
 #ifndef BPLUSTREE_H
 #define BPLUSTREE_H

@@ -3,6 +3,8 @@
 /* do excactly what we want, but for the sake of code duplication, it's best to */
 /* keep what's here to a minimum. */
 
+#include <jkweb/common.h>
+
 #ifndef BBIAUGMENT_H
 #define BBIAUGMENT_H
 

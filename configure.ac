@@ -9,11 +9,23 @@ AC_CONFIG_SRCDIR([beato/metaBig.c])
 
 # Checks for programs.
 AC_PROG_CC
+# Fix for GCC 15 / C23 strictness
+CFLAGS="$CFLAGS \
+    -std=gnu17 \
+    -include stdio.h \
+    -I\$(top_srcdir)/jkweb \
+    -I\$(top_srcdir)/beato \
+    -Wno-error=incompatible-pointer-types \
+    -Wno-error=implicit-function-declaration \
+    -Wno-error=int-conversion \
+    -Wno-error=return-mismatch"
 AC_PROG_RANLIB
 AC_LANG([C])
 AM_PROG_CC_C_O
 AM_MAINTAINER_MODE([disable])
 
+LIBS="$LIBS -lm -lz"
+CFLAGS="$CFLAGS -pthread"
 # Stuff for the -DCOLOR32 define. This is library-independent so just having the define
 # is enough
 AC_ARG_ENABLE([color-32],
@@ -51,16 +63,54 @@ AC_CHECK_HEADERS([arpa/inet.h fcntl.h float.h limits.h netdb.h math.h netinet/in
 
 # REQUIRED headers, with some additional checks for libraries
 
-AC_SEARCH_LIBS([pthread_create], [pthread], [has_pthread=yes], [has_pthread=no])
-if test "x${has_pthread}" != xyes; then
-   AC_MSG_ERROR([
-   ---------------------------------------------
-   Unable to find libpthread required for compiling
-   libjkweb.a. Install this and run ./configure
-   with the appropriate LDFLAGS/CFLAGS/etc.
-   See the INSTALL for examples.
-   ---------------------------------------------])
-fi
+#AC_SEARCH_LIBS([pthread_create], [pthread], [has_pthread=yes], [has_pthread=no])
+#if test "x${has_pthread}" != xyes; then
+#   AC_MSG_ERROR([
+#   ---------------------------------------------
+#   Unable to find libpthread required for compiling
+#   libjkweb.a. Install this and run ./configure
+#   with the appropriate LDFLAGS/CFLAGS/etc.
+#   See the INSTALL for examples.
+#   ---------------------------------------------])
+#fi
+# --- GCC 15 COMPATIBLE PTHREAD CHECK (VERSION 2) ---
+AC_MSG_CHECKING([for pthreads])
+# We use AC_LINK_IFELSE with a complete, valid C program
+AC_LINK_IFELSE([
+    AC_LANG_PROGRAM(
+        [[
+        #include <pthread.h>
+        #include <stdlib.h>
+        void* test_func(void* arg) { return arg; }
+        ]],
+        [[
+        pthread_t thr;
+        pthread_create(&thr, NULL, test_func, NULL);
+        pthread_join(thr, NULL);
+        ]]
+    )],
+    [
+        AC_MSG_RESULT([yes])
+        LIBS="-lpthread $LIBS"
+    ],
+    [
+        # If the link failed, it might be because pthreads is already in libc
+        AC_LINK_IFELSE([
+            AC_LANG_PROGRAM(
+                [[#include <pthread.h>]],
+                [[pthread_t thr; pthread_create(&thr, NULL, NULL, NULL);]]
+            )],
+            [
+                AC_MSG_RESULT([yes (in libc)])
+            ],
+            [
+                AC_MSG_RESULT([no])
+                AC_MSG_ERROR([libbeato requires pthreads. Please install libc-dev/pthread.])
+            ]
+        )
+    ]
+)
+# ----------------------------------------------------
 AC_SEARCH_LIBS([pow], [m], [has_math=yes], [has_math=no])
 if test "x${has_math}" != xyes; then
    AC_MSG_ERROR([

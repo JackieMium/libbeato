@@ -1,3 +1,4 @@
+#include "jkweb/common.h"
 #include <beato/bbiAugment.h>
 #include <jkweb/bPlusTree.h>
 #include <jkweb/bbiFile.h>
