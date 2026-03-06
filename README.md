@@ -1,3 +1,23 @@
+
+# Updates (since fork 2026.03)
+
+The original repo [CRG-Barcelona/libbeato](https://github.com/CRG-Barcelona/libbeato) seems to have been abandoned for quite some time, rendering it obsolete. This fork made the minimal changes to allow it to be built on a newer Linux platform (tested on Debian Linux,  gcc version 15.2.0 and 14.2.0).
+
+After the changes, simply clone this repo and run:
+
+```
+./configure
+make
+```
+
+should be enough for `libbeato` to compile and successfully build.
+
+For more info refer to [JackieMium/bwtool](https://github.com/JackieMium/bwtool) and the original repository.
+
+END (2026.03)
+
+-----
+
 [![Build Status](https://travis-ci.org/CRG-Barcelona/libbeato.svg?branch=master)](https://travis-ci.org/CRG-Barcelona/libbeato)
 ## libbeato
 This is a C library containing routines for various uses in Genomics, and includes a copy of the freeware portion of the C library from UCSC's Genome Browser Group.  
